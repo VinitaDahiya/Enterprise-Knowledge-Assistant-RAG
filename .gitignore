@@ -1,0 +1,28 @@
+# Virtual Environment
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Environment Variables
+.env
+
+# Vector Database
+vectordb/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+
+# created automatically by VS Code when you click Run Code
+tempCodeRunnerFile.py
+
+# ChromaDB
+chroma_db/
