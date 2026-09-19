@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 
 from src.rag_pipeline import ask_question
@@ -15,24 +17,31 @@ st.set_page_config(
 
 
 # ---------------------------------------------------------
-# Application title
+# Header
 # ---------------------------------------------------------
 
 st.title("📚 Enterprise Knowledge Assistant")
 
-st.write(
-    "Ask questions about the information contained in the "
-    "uploaded enterprise documents."
+st.markdown(
+    "Ask questions and get answers grounded in the information "
+    "contained in the enterprise documents."
+)
+
+st.caption(
+    "Powered by semantic search, ChromaDB, and an OpenAI language model."
 )
 
 
 # ---------------------------------------------------------
-# User input
+# Question input
 # ---------------------------------------------------------
 
+st.subheader("Ask a Question")
+
 question = st.text_input(
-    "Ask a question:",
-    placeholder="Example: How many annual leave days do employees receive?"
+    "Enter your question:",
+    placeholder="Example: How many annual leave days do employees receive?",
+    label_visibility="visible"
 )
 
 
@@ -40,7 +49,7 @@ question = st.text_input(
 # Ask button
 # ---------------------------------------------------------
 
-if st.button("Ask Question"):
+if st.button("Ask Question", type="primary"):
 
     if not question.strip():
 
@@ -48,7 +57,9 @@ if st.button("Ask Question"):
 
     else:
 
-        with st.spinner("Searching documents and generating answer..."):
+        with st.spinner(
+            "Searching the knowledge base and generating an answer..."
+        ):
 
             answer, results = ask_question(
                 question,
@@ -56,20 +67,22 @@ if st.button("Ask Question"):
             )
 
         # -------------------------------------------------
-        # Display answer
+        # Answer
         # -------------------------------------------------
 
-        st.subheader("Answer")
+        st.divider()
+
+        st.subheader("💡 Answer")
 
         st.write(answer)
 
         # -------------------------------------------------
-        # Display sources
+        # Sources
         # -------------------------------------------------
 
         if results is not None:
 
-            st.subheader("Sources")
+            st.subheader("📄 Sources")
 
             for i in range(len(results["metadatas"][0])):
 
@@ -80,11 +93,28 @@ if st.button("Ask Question"):
                     "Unknown source"
                 )
 
+                # Display only the filename instead of the
+                # complete local file path.
+                filename = os.path.basename(source)
+
                 page = metadata.get("page")
 
                 if page is not None:
                     page = page + 1
 
                 st.write(
-                    f"{i + 1}. {source} — Page {page}"
+                    f"**{i + 1}. {filename}** — Page {page}"
                 )
+
+
+# ---------------------------------------------------------
+# Footer
+# ---------------------------------------------------------
+
+st.divider()
+
+st.caption(
+    "Answers are generated using retrieved document context. "
+    "If the required information is not available in the "
+    "provided documents, the assistant may decline to answer."
+)
