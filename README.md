@@ -358,7 +358,6 @@ streamlit run app.py
 Enterprise-Knowledge-Assistant-RAG/
 │
 ├── app.py
-├── config.py
 ├── README.md
 ├── requirements.txt
 │
@@ -426,13 +425,13 @@ Do not commit the `.env` file to Git.
 
 ### 6. Build the Vector Store
 
-Generate embeddings from the PDF documents and create or update the ChromaDB vector store:
+Generate embeddings from the PDF documents and rebuild the ChromaDB vector store:
 
 ```bash
 python src/vector_store.py
 ```
 
-This creates or updates the persistent ChromaDB collection:
+This creates the persistent ChromaDB collection:
 
 ```text
 enterprise_knowledge
@@ -444,7 +443,7 @@ The vector store is stored locally in:
 chroma_db/
 ```
 
-The ingestion process uses `upsert`, so existing document chunks can be updated without creating duplicate IDs.
+Each ingestion run rebuilds the collection from the current documents. This ensures that deleted or modified documents do not leave stale chunks in the vector store.
 
 ---
 

@@ -3,9 +3,16 @@ import chromadb
 from embeddings import generate_embeddings
 
 
+COLLECTION_NAME = "enterprise_knowledge"
+VECTOR_STORE_PATH = "./chroma_db"
+
+
 def create_vector_store():
     """
-    Generate embeddings and store document chunks in ChromaDB.
+    Build the ChromaDB vector store from the current PDF documents.
+
+    The existing collection is recreated so that deleted or modified
+    documents cannot leave stale chunks in the vector store.
     """
 
     # Generate document chunks and embeddings
@@ -13,12 +20,21 @@ def create_vector_store():
 
     # Create a persistent ChromaDB client
     client = chromadb.PersistentClient(
-        path="./chroma_db"
+        path=VECTOR_STORE_PATH
     )
 
-    # Create or get the collection
-    collection = client.get_or_create_collection(
-        name="enterprise_knowledge"
+    # Delete the existing collection if it exists
+    try:
+        client.delete_collection(
+            name=COLLECTION_NAME
+        )
+    except Exception:
+        # Collection does not exist yet
+        pass
+
+    # Create a fresh collection
+    collection = client.create_collection(
+        name=COLLECTION_NAME
     )
 
     # Prepare data for ChromaDB
@@ -37,8 +53,8 @@ def create_vector_store():
         for i in range(len(chunks))
     ]
 
-    # Add new records or update existing records
-    collection.upsert(
+    # Add the current document chunks
+    collection.add(
         ids=ids,
         documents=documents,
         embeddings=embeddings.tolist(),

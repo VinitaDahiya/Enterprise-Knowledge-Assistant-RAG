@@ -22,11 +22,3 @@ def create_chunks():
     return chunks
  
  
-# print(f"Total Chunks Created: {len(chunks)}")
-
-
-# print("\nFirst Chunk:\n")
-# print(chunks[0].page_content)
-
-# print("\nMetadata:\n")
-# print(chunks[0].metadata)

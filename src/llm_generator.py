@@ -1,15 +1,4 @@
-'''
-We first need a Python file whose job is simply:
 
-Take some retrieved text + a question → send both to OpenAI → return the answer.
-
-This file will not search ChromaDB.
-
-It will only handle the generation part of RAG.
-
-"retrieved chunk", I mean a small piece of text from one of your PDFs that ChromaDB has identified
-as relevant to the user's question.
-'''
 
 import logging
 from openai import OpenAI
