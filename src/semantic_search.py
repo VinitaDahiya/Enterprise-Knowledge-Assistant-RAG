@@ -34,15 +34,23 @@ def get_collection():
     """
     logger.info("Connecting to ChromaDB.")
 
-    client = chromadb.PersistentClient(
-        path="./chroma_db"
-    )
+    client = chromadb.PersistentClient(path="./chroma_db")
+    
+    try:
+        collection = client.get_collection(name="enterprise_knowledge" )
+        logger.info("Existing ChromaDB collection found.")
+        return collection
+    
+    except Exception:
+        logger.info("ChromaDB collection not found. Building vector store...")
+        from src.vector_store import create_vector_store
 
-    collection = client.get_collection(
-        name="enterprise_knowledge"
-    )
+        collection = create_vector_store()
+        logger.info("ChromaDB vector store created successfully.")
+        return collection
+        
 
-    return collection
+    
 
 
 def search_documents(query, top_k=3):
