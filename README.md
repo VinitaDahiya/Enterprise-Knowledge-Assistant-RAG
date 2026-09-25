@@ -352,6 +352,17 @@ streamlit run app.py
 
 ---
 
+### Application Screenshots 
+
+
+#### Question and Answer
+
+![RAG question and answer](screenshots/rag-question-answer.png)
+
+#### Sources and Grounding
+
+![RAG sources and grounding](screenshots/rag-sources-grounding.png)
+
 ## Project Structure
 
 ```text
