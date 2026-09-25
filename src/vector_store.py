@@ -1,6 +1,6 @@
 import chromadb
 
-from embeddings import generate_embeddings
+from src.embeddings import generate_embeddings
 
 
 COLLECTION_NAME = "enterprise_knowledge"

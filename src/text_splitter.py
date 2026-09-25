@@ -2,7 +2,7 @@
 ## imports
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter   #This class will split our documents into smaller chunks.
-from document_loader import load_documents
+from src.document_loader import load_documents
 
 
 

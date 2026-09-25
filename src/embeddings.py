@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer
-from text_splitter import create_chunks
+from src.text_splitter import create_chunks
 
 
 def generate_embeddings():
